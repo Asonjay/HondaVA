@@ -15,7 +15,7 @@ const restify = require('restify');
 const { BotFrameworkAdapter } = require('botbuilder');
 
 // This bot's main dialog.
-const { EchoBot } = require('./bot');
+const { MyBot } = require('./bot');
 
 // Create HTTP server
 const server = restify.createServer();
@@ -26,12 +26,19 @@ server.listen(process.env.port || process.env.PORT || 3978, () => {
 });
 
 // Create adapter.
+// Map knowledge base endpoint values from .env file into the required format for `QnAMaker`.
+const configuration = {
+   knowledgeBaseId: process.env.QnAKnowledgebaseId,
+   endpointKey: process.env.QnAAuthKey,
+   host: process.env.QnAEndpointHostName
+};
+
+
+
 // See https://aka.ms/about-bot-adapter to learn more about how bots work.
 const adapter = new BotFrameworkAdapter({
     appId: process.env.MicrosoftAppId,
-    appPassword: process.env.MicrosoftAppPassword,
-    channelService: process.env.ChannelService,
-    openIdMetadata: process.env.BotOpenIdMetadata
+    appPassword: process.env.MicrosoftAppPassword
 });
 
 // Catch-all for errors.
@@ -54,11 +61,14 @@ const onTurnErrorHandler = async (context, error) => {
     await context.sendActivity('To continue to run this bot, please fix the bot source code.');
 };
 
+
+
+
 // Set the onTurnError for the singleton BotFrameworkAdapter.
 adapter.onTurnError = onTurnErrorHandler;
 
 // Create the main dialog.
-const myBot = new EchoBot();
+const myBot = new MyBot(configuration, {});
 
 // Listen for incoming requests.
 server.post('/api/messages', (req, res) => {
