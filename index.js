@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// index.js is used to setup and configure your bot
+
+// Import required packages
 const path = require('path');
 
-const dotenv = require('dotenv');
-// Import required bot configuration.
+// Note: Ensure you have a .env file and include all necessary credentials to access services like LUIS and QnAMaker.
 const ENV_FILE = path.join(__dirname, '.env');
-dotenv.config({ path: ENV_FILE });
+require('dotenv').config({ path: ENV_FILE });
 
 const restify = require('restify');
 
@@ -14,38 +16,21 @@ const restify = require('restify');
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
 const { BotFrameworkAdapter } = require('botbuilder');
 
-// This bot's main dialog.
-const { MyBot } = require('./bot');
-
-// Create HTTP server
-const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, () => {
-    console.log(`\n${ server.name } listening to ${ server.url }`);
-    console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
-    console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
-});
+const { DispatchBot } = require('./bots/dispatchBot');
 
 // Create adapter.
-// Map knowledge base endpoint values from .env file into the required format for `QnAMaker`.
-const configuration = {
-   knowledgeBaseId: process.env.QnAKnowledgebaseId,
-   endpointKey: process.env.QnAAuthKey,
-   host: process.env.QnAEndpointHostName
-};
-
-
-
-// See https://aka.ms/about-bot-adapter to learn more about how bots work.
+// See https://aka.ms/about-bot-adapter to learn more.
 const adapter = new BotFrameworkAdapter({
     appId: process.env.MicrosoftAppId,
     appPassword: process.env.MicrosoftAppPassword
 });
 
 // Catch-all for errors.
-const onTurnErrorHandler = async (context, error) => {
+adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator
@@ -61,36 +46,22 @@ const onTurnErrorHandler = async (context, error) => {
     await context.sendActivity('To continue to run this bot, please fix the bot source code.');
 };
 
-
-
-
-// Set the onTurnError for the singleton BotFrameworkAdapter.
-adapter.onTurnError = onTurnErrorHandler;
-
 // Create the main dialog.
-const myBot = new MyBot(configuration, {});
+const bot = new DispatchBot();
 
-// Listen for incoming requests.
-server.post('/api/messages', (req, res) => {
-    adapter.processActivity(req, res, async (context) => {
-        // Route to main dialog.
-        await myBot.run(context);
-    });
+// Create HTTP server
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, function() {
+    console.log(`\n${ server.name } listening to ${ server.url }`);
+    console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
+    console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
 });
 
-// Listen for Upgrade requests for Streaming.
-server.on('upgrade', (req, socket, head) => {
-    // Create an adapter scoped to this WebSocket connection to allow storing session data.
-    const streamingAdapter = new BotFrameworkAdapter({
-        appId: process.env.MicrosoftAppId,
-        appPassword: process.env.MicrosoftAppPassword
-    });
-    // Set onTurnError for the BotFrameworkAdapter created for each connection.
-    streamingAdapter.onTurnError = onTurnErrorHandler;
-
-    streamingAdapter.useWebSocket(req, socket, head, async (context) => {
-        // After connecting via WebSocket, run this logic for every request sent over
-        // the WebSocket connection.
-        await myBot.run(context);
+// Listen for incoming activities and route them to your bot main dialog.
+server.post('/api/messages', (req, res) => {
+    // Route received a request to adapter for processing
+    adapter.processActivity(req, res, async (turnContext) => {
+        // route to bot activity handler.
+        await bot.run(turnContext);
     });
 });
