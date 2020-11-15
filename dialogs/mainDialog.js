@@ -6,9 +6,11 @@ const { MessageFactory, InputHints } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
 const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const moment = require('moment-timezone');
-
+const sendQueries = require('../searchUtils/search.js')
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
-
+const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("@azure/search-documents");
+const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
+const search_apiKey = process.env.SEARCH_API_KEY || "";
 class MainDialog extends ComponentDialog {
     constructor(luisRecognizer, bookingDialog) {
         super('MainDialog');
@@ -112,6 +114,12 @@ class MainDialog extends ComponentDialog {
             console.log('in go cognitive');
             const documents_keyword = this.luisRecognizer.getBehaviorEntities(luisResult);
             console.log(documents_keyword.keyword);
+            const searchClient = new SearchClient(search_endpoint, "azureblob-index", new AzureKeyCredential(search_apiKey));
+
+            sendQueries(searchClient, documents_keyword.keyword).then((res)=>{
+            console.log(res);
+});
+
             //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
             break;
         }

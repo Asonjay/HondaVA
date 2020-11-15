@@ -25,6 +25,9 @@ const { MainDialog } = require('./dialogs/mainDialog');
 // the bot's booking dialog
 const { BookingDialog } = require('./dialogs/bookingDialog');
 const BOOKING_DIALOG = 'bookingDialog';
+const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("@azure/search-documents");
+const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
+const search_apiKey = process.env.SEARCH_API_KEY || "";
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
