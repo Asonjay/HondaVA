@@ -1,7 +1,7 @@
 /* eslint-disable */
 module.exports = {
     "extends": "standard",
-    "rules": {
+    "rules": {    
         "semi": [2, "always"],
         "indent": [2, 4],
         "no-return-await": 0,
@@ -11,5 +11,10 @@ module.exports = {
             "asyncArrow": "always"
         }],
         "template-curly-spacing": [2, "always"]
+    },
+    "env": {
+        "commonjs": true,
+        "node": true,
+        "mocha": true     
     }
 };

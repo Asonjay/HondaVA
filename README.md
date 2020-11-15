@@ -1,14 +1,13 @@
-# NLP with Dispatch
+# CoreBot
 
-Bot Framework v4 NLP with Dispatch bot sample
+Bot Framework v4 core bot sample.
 
-This bot has been created using [Bot Framework](https://dev.botframework.com), it shows how to create a bot that relies on multiple [LUIS.ai](https://www.luis.ai) and [QnAMaker.ai](https://www.qnamaker.ai) models for natural language processing (NLP).
+This bot has been created using [Bot Framework](https://dev.botframework.com), it shows how to:
 
-Use the Dispatch model in cases when:
-
-- Your bot consists of multiple language modules (LUIS + QnA) and you need assistance in routing user's utterances to these modules in order to integrate the different modules into your bot.
-- Evaluate quality of intents classification of a single LUIS model.
-- Create a text classification model from text files.
+- Use [LUIS](https://www.luis.ai) to implement core AI capabilities
+- Implement a multi-turn conversation using Dialogs
+- Handle user interruptions for such things as `Help` or `Cancel`
+- Prompt for and validate requests for information from the user
 
 ## Prerequisites
 
@@ -16,7 +15,7 @@ This sample **requires** prerequisites in order to run.
 
 ### Overview
 
-This bot uses the Dispatch service to route utterances as it demonstrates the use of multiple LUIS models and QnA maker services to support multiper conversational scenarios.
+This bot uses [LUIS](https://www.luis.ai), an AI based cognitive service, to implement language understanding.
 
 - [Node.js](https://nodejs.org) version 10.14 or higher
 
@@ -25,22 +24,30 @@ This bot uses the Dispatch service to route utterances as it demonstrates the us
     node --version
     ```
 
-### Use Dispatch with Mulitple LUIS and QnA Models
+### Create a LUIS Application to enable language understanding
 
-To learn how to configure Dispatch with multiple LUIS models and QnA Maker services, refer to the steps found [here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-tutorial-dispatch?view=azure-bot-service-4.0).
+The LUIS model for this example can be found under `cognitiveModels/FlightBooking.json` and the LUIS language model setup, training, and application configuration steps can be found [here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-luis?view=azure-bot-service-4.0&tabs=javascript).
+
+Once you created the LUIS model, update `.env` with your `LuisAppId`, `LuisAPIKey` and `LuisAPIHostName`.
+
+```text
+LuisAppId = "Your LUIS App Id"
+LuisAPIKey = "Your LUIS Subscription key here"
+LuisAPIHostName = "Your LUIS App region here (i.e: westus.api.cognitive.microsoft.com)"
+```
 
 ## To try this sample
 
 - Clone the repository
 
     ```bash
-    git clone https://github.com/Microsoft/botbuilder-samples.git
+    git clone https://github.com/microsoft/botbuilder-samples.git
     ```
 
-- In a terminal, navigate to `samples/javascript_nodejs/14.nlp-with-dispatch`
+- In a terminal, navigate to `samples/javascript_nodejs/13.core-bot`
 
     ```bash
-    cd samples/javascript_nodejs/14.nlp-with-dispatch
+    cd samples/javascript_nodejs/13.core-bot
     ```
 
 - Install modules
@@ -49,11 +56,11 @@ To learn how to configure Dispatch with multiple LUIS models and QnA Maker servi
     npm install
     ```
 
-- Setup Dispatch
+- Setup LUIS
 
-    The prerequisite outlined above contain the steps necessary to configure Dispatch with multiple LUIS models and QnA Maker services.  Refer to [Use multiple LUIS and QnA models](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-tutorial-dispatch?view=azure-bot-service-4.0) for directions to setup and configure Dispatch.
+    The prerequisites outlined above contain the steps necessary to provision a language understanding model on www.luis.ai.  Refer to _Create a LUIS Application to enable language understanding_ above for directions to setup and configure LUIS.
 
-- Start the bot
+- Run the sample
 
     ```bash
     npm start
@@ -71,10 +78,6 @@ To learn how to configure Dispatch with multiple LUIS models and QnA Maker servi
 - File -> Open Bot
 - Enter a Bot URL of `http://localhost:3978/api/messages`
 
-## Interacting with the bot
-
-Once you are comfortable with the concepts presented in this sample, you may want to configure Dispatch using a CLI tool.  [Dispatch CLI](https://github.com/Microsoft/botbuilder-tools/tree/master/packages/Dispatch) is a CLI tool that enables you to create a dispatch NLP model across the different LUIS applications and/ or QnA Maker Knowledge Bases you have for your bot.
-
 ## Deploy the bot to Azure
 
 To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
@@ -83,8 +86,8 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](htt
 
 - [Bot Framework Documentation](https://docs.botframework.com)
 - [Bot Basics](https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0)
-- [Using LUIS for Language Understanding](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-luis?view=azure-bot-service-4.0&tabs=js)
-- [LUIS documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/)
+- [Dialogs](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0)
+- [Gathering Input Using Prompts](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-prompts?view=azure-bot-service-4.0&tabs=csharp)
 - [Activity processing](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-activity-processing?view=azure-bot-service-4.0)
 - [Azure Bot Service Introduction](https://docs.microsoft.com/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
 - [Azure Bot Service Documentation](https://docs.microsoft.com/azure/bot-service/?view=azure-bot-service-4.0)
