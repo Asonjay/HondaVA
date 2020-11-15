@@ -69,11 +69,11 @@ class FlightBookingRecognizer {
     }
 
     getBehaviorEntities(result){
-        let behaviorValue = result.entities.behaviors;
-        if (result.entities.$instance.behaviors) {
-            behaviorValue = result.entities.$instance.behaviors[0].text;
+        let keywordValue = result.entities.document_keywords;
+        if (result.entities.$instance.keyword) {
+            keywordValue = result.entities.$instance.document_keywords[0].text;
         }
-        return{behaviors:behaviorValue};
+        return{keyword:keywordValue};
     }
 }
 

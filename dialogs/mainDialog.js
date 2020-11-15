@@ -108,10 +108,10 @@ class MainDialog extends ComponentDialog {
 
         case 'go_cognitive': {
             // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-            const getWeatherMessageText = 'TODO: get weather flow here';
+            //const getWeatherMessageText = 'TODO: get weather flow here';
             console.log('in go cognitive');
-            const behavior = this.luisRecognizer.getBehaviorsEntities(luisResult);
-            console.log(behavior.behaviors);
+            const documents_keyword = this.luisRecognizer.getBehaviorEntities(luisResult);
+            console.log(documents_keyword.keyword);
             //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
             break;
         }
