@@ -15,7 +15,7 @@ async function sendQueries(searchClient, keyWords) {
         queryType: "full"
     };
 
-    let searchResults = await searchClient.search(keyWords, searchOptions);
+    let searchResults = await searchClient.search(keyWords + "~", searchOptions);
     for await (const result of searchResults.results) {
         console.log(`${JSON.stringify(result.document)}`);
     }
@@ -31,7 +31,7 @@ async function sendQueries(searchClient, keyWords) {
 // EXAMPLE OF HOW TO USE THIS
 // const searchClient = new SearchClient(endpoint, "azureblob-index", new AzureKeyCredential(apiKey));
 
-// sendQueries(searchClient).then((res)=>{
+// sendQueries(searchClient, "cr-v").then((res)=>{
 //     res is searchResultsObj
 //     console.log(res);
 // });
