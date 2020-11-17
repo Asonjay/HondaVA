@@ -8,9 +8,6 @@ require("dotenv").config();
 // const endpoint = process.env.SEARCH_API_ENDPOINT || "";
 // const apiKey = process.env.SEARCH_API_KEY || "";
 
-
-
-
 async function sendQueries(searchClient, keyWords) {
     let searchOptions = {
         includeTotalCount: true,

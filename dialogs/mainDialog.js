@@ -111,14 +111,13 @@ class MainDialog extends ComponentDialog {
         case 'go_cognitive': {
             // We haven't implemented the GetWeatherDialog so we just display a TODO message.
             //const getWeatherMessageText = 'TODO: get weather flow here';
-            console.log('in go cognitive');
             const documents_keyword = this.luisRecognizer.getBehaviorEntities(luisResult);
             console.log(documents_keyword.keyword);
             const searchClient = new SearchClient(search_endpoint, "azureblob-index", new AzureKeyCredential(search_apiKey));
 
             sendQueries(searchClient, documents_keyword.keyword).then((res)=>{
-            console.log(res);
-});
+                console.log(res);
+            });
 
             //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
             break;
