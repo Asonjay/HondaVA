@@ -6,9 +6,13 @@ const { MessageFactory, InputHints } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
 const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const moment = require('moment-timezone');
-
+const sendQueries = require('../searchUtils/search.js')
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
-
+const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("@azure/search-documents");
+const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
+const search_apiKey = process.env.SEARCH_API_KEY || "";
+const { CardFactory } = require('botbuilder');
+const testcard = require('../bots/resources/testcard.json');
 class MainDialog extends ComponentDialog {
     constructor(luisRecognizer, bookingDialog) {
         super('MainDialog');
@@ -61,7 +65,7 @@ class MainDialog extends ComponentDialog {
         }
 
         const weekLaterDate = moment().add(7, 'days').format('MMMM D, YYYY');
-        const messageText = stepContext.options.restartMsg ? stepContext.options.restartMsg : `What can I help you with today?\nSay something like "Book a flight from Paris to Berlin on ${ weekLaterDate }"`;
+        const messageText = stepContext.options.restartMsg ? stepContext.options.restartMsg : `What can I help you with today?`;
         const promptMessage = MessageFactory.text(messageText, messageText, InputHints.ExpectingInput);
         return await stepContext.prompt('TextPrompt', { prompt: promptMessage });
     }
@@ -112,6 +116,37 @@ class MainDialog extends ComponentDialog {
             console.log('in go cognitive');
             const documents_keyword = this.luisRecognizer.getBehaviorEntities(luisResult);
             console.log(documents_keyword.keyword);
+            const searchClient = new SearchClient(search_endpoint, "azureblob-index", new AzureKeyCredential(search_apiKey));
+            let searchOptions = {
+                includeTotalCount: true,
+                select: []
+                //queryType: "full",        
+            };
+            let searchResults = await searchClient.search(documents_keyword.keyword, searchOptions);
+            let count = searchResults.count;
+            let a = [];
+            for await (const result of searchResults.results) {
+                a.push(result);
+                console.log(`${JSON.stringify(result.document.content)}`);
+            }      
+            //console.log(searchResults.count);
+            if(searchResults.count===0){
+                const noResultMessage = 'Sorry, we cannot find related articles from our search service.';
+                await stepContext.context.sendActivity(noResultMessage,noResultMessage,InputHints.IgnoringInput);
+            }
+
+            else{
+                const ResultMessage = 'We have found you these results:';
+                await stepContext.context.sendActivity(ResultMessage,ResultMessage,InputHints.IgnoringInput);
+                for(let i=0;i<searchResults.count;i++){
+                    await stepContext.context.sendActivity(`${JSON.stringify(a[i].document.content)}`,`${JSON.stringify(a[i].document.content)}`,InputHints.IgnoringInput);
+
+                }
+
+                //await stepContext.context.sendActivity(`${JSON.stringify(a.document.content)}`,`${JSON.stringify(a.document.content)}`,InputHints.IgnoringInput);
+            }
+            //const card = CardFactory.adaptiveCard(testcard);
+            //await stepContext.context.sendActivity({ attachments: [card] });
             //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
             break;
         }

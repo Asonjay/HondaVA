@@ -4,9 +4,9 @@ const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("
 require("dotenv").config();
 
 // Getting endpoint and apiKey from .env file
-const endpoint = process.env.SEARCH_API_ENDPOINT || "";
-const apiKey = process.env.SEARCH_API_KEY || "";
 
+// const endpoint = process.env.SEARCH_API_ENDPOINT || "";
+// const apiKey = process.env.SEARCH_API_KEY || "";
 
 async function sendQueries(searchClient, keyWords) {
     let searchOptions = {
