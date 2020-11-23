@@ -12,7 +12,7 @@ const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("
 const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
 const search_apiKey = process.env.SEARCH_API_KEY || "";
 const { CardFactory } = require('botbuilder');
-const testcard = require('../bots/resources/testcard.json');
+//const testcard = require('../bots/resources/testcard.json');
 class MainDialog extends ComponentDialog {
     constructor(luisRecognizer, bookingDialog) {
         super('MainDialog');
