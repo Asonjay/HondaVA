@@ -5,7 +5,7 @@
   "body": [
     {
       "type": "Image",
-      "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtB3AwMUeNoq4gUBGe6Ocj8kyh3bXa9ZbV7u1fVKQoyKFHdkqU",
+      "url": "http://ilikesqldata.com/wp-content/uploads/2018/05/azurecomcdn.azureedge.net6919980b-f019-469b-a065-d-3e214ed626856a2a3a54518b684abaccb0ac4059.png",
       "size": "stretch"
     },
     {
@@ -13,7 +13,7 @@
       "spacing": "medium",
       "size": "default",
       "weight": "bolder",
-      "text": "Welcome to Bot Framework!",
+      "text": "Welcome to Virtual Assistant powered by Azure Cognitive Search!",
       "wrap": true,
       "maxLines": 0
     },
@@ -21,7 +21,7 @@
       "type": "TextBlock",
       "size": "default",
       "isSubtle": true,
-      "text": "Now that you have successfully run your bot, follow the links in this Adaptive Card to expand your knowledge of Bot Framework.",
+      "text": "You can search for things related to Honda such as Honda Civic",
       "wrap": true,
       "maxLines": 0
     }
@@ -29,12 +29,12 @@
   "actions": [
     {
       "type": "Action.OpenUrl",
-      "title": "Get an overview",
-      "url": "https://docs.microsoft.com/en-us/azure/bot-service/?view=azure-bot-service-4.0"
+      "title": "Get an overview about Cognitive Search",
+      "url": "https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search"
     },
     {
       "type": "Action.OpenUrl",
-      "title": "Ask a question",
+      "title": "Ask a question about the bot framework",
       "url": "https://stackoverflow.com/questions/tagged/botframework"
     },
     {
