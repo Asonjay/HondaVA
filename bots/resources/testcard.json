@@ -1,0 +1,38 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Image",
+      "url": "http://ilikesqldata.com/wp-content/uploads/2018/05/azurecomcdn.azureedge.net6919980b-f019-469b-a065-d-3e214ed626856a2a3a54518b684abaccb0ac4059.png",
+      "size": "stretch"
+    },
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "Welcome to Virtual Assistant powered by Azure Cognitive Search!",
+      "wrap": true,
+      "maxLines": 0
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "Go to the link to the result",
+      "url": "https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "Understand how cognitive search works",
+      "url": "https://docs.microsoft.com/en-us/azure/search/search-what-is-azure-search"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "Report a problem",
+      "url": "https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-deploy-azure?view=azure-bot-service-4.0"
+    }
+  ]
+}
