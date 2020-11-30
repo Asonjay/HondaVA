@@ -12,7 +12,7 @@ const { SearchIndexClient, SearchClient, AzureKeyCredential, odata } = require("
 const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
 const search_apiKey = process.env.SEARCH_API_KEY || "";
 const { CardFactory } = require('botbuilder');
-//const testcard = require('../bots/resources/testcard.json');
+const testcard = require('../bots/resources/testcard.json');
 class MainDialog extends ComponentDialog {
     constructor(luisRecognizer, bookingDialog) {
         super('MainDialog');
@@ -140,7 +140,7 @@ class MainDialog extends ComponentDialog {
             let a = [];
             for await (const result of searchResults.results) {
                 a.push(result);
-                console.log(`${JSON.stringify(result.document.content)}`);
+                //console.log(`${JSON.stringify(result.document.content)}`);
             }      
             //console.log(searchResults.count);
             if(searchResults.count===0){
@@ -154,7 +154,11 @@ class MainDialog extends ComponentDialog {
                 //let cards = [];
                 for(let i=0;i<searchResults.count;i++){
                     //await stepContext.context.sendActivity(`${JSON.stringify(a[i].document.content)}`,`${JSON.stringify(a[i].document.content)}`,InputHints.IgnoringInput);
-                    let card = this.generateCards(`${JSON.stringify(a[i].document.content)}`);
+                    let str = `${JSON.stringify(a[i].document.content)}`; 
+                    str = JSON.parse(str);
+                    console.log(str);
+                    //let card = this.generateCards(`${JSON.stringify(a[i].document.content)}`);\
+                    let card = this.generateCards(str);
                     const welcomeCard = CardFactory.adaptiveCard(card);
                     await stepContext.context.sendActivity({ attachments: [welcomeCard] });
 
