@@ -52,6 +52,18 @@ class MainDialog extends ComponentDialog {
         }
     }
 
+    generateCards(searchResults){
+        //const fs = require('fs');
+        //let test = fs.readFileSync('student.json');
+        let c = testcard;
+        c.body[1].text = searchResults;
+        console.log(c.body[1].text);
+        //console.log(userData);
+        return c;
+        // const didntUnderstandMessageText = `generating cards...`;
+        // return await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+    }
+
     /**
      * First step in the waterfall dialog. Prompts the user for a command.
      * Currently, this expects a booking request, like "book me a flight from Paris to Berlin on march 22"
@@ -105,6 +117,7 @@ class MainDialog extends ComponentDialog {
 
         case 'GetWeather': {
             // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+            //await generateCards();
             const getWeatherMessageText = 'TODO: get weather flow here';
             await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
             break;
@@ -138,13 +151,20 @@ class MainDialog extends ComponentDialog {
             else{
                 const ResultMessage = 'We have found you these results:';
                 await stepContext.context.sendActivity(ResultMessage,ResultMessage,InputHints.IgnoringInput);
+                //let cards = [];
                 for(let i=0;i<searchResults.count;i++){
-                    await stepContext.context.sendActivity(`${JSON.stringify(a[i].document.content)}`,`${JSON.stringify(a[i].document.content)}`,InputHints.IgnoringInput);
+                    //await stepContext.context.sendActivity(`${JSON.stringify(a[i].document.content)}`,`${JSON.stringify(a[i].document.content)}`,InputHints.IgnoringInput);
+                    let card = this.generateCards(`${JSON.stringify(a[i].document.content)}`);
+                    const welcomeCard = CardFactory.adaptiveCard(card);
+                    await stepContext.context.sendActivity({ attachments: [welcomeCard] });
 
                 }
-
+                // let card = this.generateCards(`${JSON.stringify(a[0].document.content)}`);
+                // const welcomeCard = CardFactory.adaptiveCard(card);
+                // await stepContext.context.sendActivity({ attachments: [welcomeCard] });
                 //await stepContext.context.sendActivity(`${JSON.stringify(a.document.content)}`,`${JSON.stringify(a.document.content)}`,InputHints.IgnoringInput);
             }
+
             //const card = CardFactory.adaptiveCard(testcard);
             //await stepContext.context.sendActivity({ attachments: [card] });
             //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
@@ -153,6 +173,7 @@ class MainDialog extends ComponentDialog {
 
         default: {
             // Catch all for unhandled intents
+            //this.generateCards(stepContext);
             const didntUnderstandMessageText = `Sorry, I didn't get that. Please try asking in a different way (intent was ${ LuisRecognizer.topIntent(luisResult) })`;
             await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
         }
@@ -204,6 +225,8 @@ class MainDialog extends ComponentDialog {
         // Restart the main dialog with a different message the second time around
         return await stepContext.replaceDialog(this.initialDialogId, { restartMsg: 'What else can I do for you?' });
     }
+
+    
 }
 
 module.exports.MainDialog = MainDialog;
