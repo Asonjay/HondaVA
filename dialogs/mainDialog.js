@@ -52,12 +52,13 @@ class MainDialog extends ComponentDialog {
         }
     }
 
-    generateCards(searchResults){
+    generateCards(searchResults,url){
         //const fs = require('fs');
         //let test = fs.readFileSync('student.json');
         let c = testcard;
         c.body[1].text = searchResults;
-        console.log(c.body[1].text);
+        c.actions[0].url = url;
+        console.log(c.actions[0].url);
         //console.log(userData);
         return c;
         // const didntUnderstandMessageText = `generating cards...`;
@@ -157,8 +158,9 @@ class MainDialog extends ComponentDialog {
                     let str = `${JSON.stringify(a[i].document.content)}`; 
                     str = JSON.parse(str);
                     console.log(str);
+                    let url = `${ Buffer.from( a[i].document["metadata_storage_path"], 'base64' ) }`;
                     //let card = this.generateCards(`${JSON.stringify(a[i].document.content)}`);\
-                    let card = this.generateCards(str);
+                    let card = this.generateCards(str,url);
                     const welcomeCard = CardFactory.adaptiveCard(card);
                     await stepContext.context.sendActivity({ attachments: [welcomeCard] });
 
