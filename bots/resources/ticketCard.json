@@ -1,0 +1,50 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "If you are not satisfied with the search result, submit a ticket here!",
+      "wrap": true,
+      "maxLines": 0
+    },
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "A short description of your problem:",
+      "wrap": true,
+      "maxLines": 0
+    },
+    {
+      "type": "Input.Text",
+      "id": "short_description",
+      "text":"A short description for your problem"
+    },
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "Additional comments:",
+      "wrap": true,
+      "maxLines": 0
+    },
+    {
+      "type": "Input.Text",
+      "id": "comments",
+      "text":"Comments"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    }
+  ]
+}

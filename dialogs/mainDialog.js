@@ -13,6 +13,7 @@ const search_endpoint = process.env.SEARCH_API_ENDPOINT || "";
 const search_apiKey = process.env.SEARCH_API_KEY || "";
 const { CardFactory } = require('botbuilder');
 const testcard = require('../bots/resources/testcard.json');
+const ticketcard = require('../bots/resources/ticketCard.json');
 class MainDialog extends ComponentDialog {
     constructor(luisRecognizer, bookingDialog) {
         super('MainDialog');
@@ -56,7 +57,7 @@ class MainDialog extends ComponentDialog {
         //const fs = require('fs');
         //let test = fs.readFileSync('student.json');
         let c = testcard;
-        c.body[1].text = searchResults;
+        c.body[0].text = searchResults;
         c.actions[0].url = url;
         console.log(c.actions[0].url);
         //console.log(userData);
@@ -89,7 +90,16 @@ class MainDialog extends ComponentDialog {
      */
     async actStep(stepContext) {
         const bookingDetails = {};
-
+        //let submitted = stepContext.context.activity.text;
+                // let ticketValues = stepContext.context.activity.value;
+                // let comments = JSON.parse(ticketValues.comments);
+                //console.log(comments);
+                if (stepContext.context.activity.value!=null) {
+                    // Retrieve the data from the id_number field
+                    let ticketValues = stepContext.context.activity.value;
+                    let comments = JSON.parse(ticketValues.comments);
+                    console.log(comments);
+                }
         if (!this.luisRecognizer.isConfigured) {
             // LUIS is not configured, we just run the BookingDialog path.
             return await stepContext.beginDialog('bookingDialog', bookingDetails);
@@ -125,8 +135,6 @@ class MainDialog extends ComponentDialog {
         }
 
         case 'go_cognitive': {
-            // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-            //const getWeatherMessageText = 'TODO: get weather flow here';
             console.log('in go cognitive');
             const documents_keyword = this.luisRecognizer.getBehaviorEntities(luisResult);
             console.log(documents_keyword.keyword);
@@ -141,9 +149,7 @@ class MainDialog extends ComponentDialog {
             let a = [];
             for await (const result of searchResults.results) {
                 a.push(result);
-                //console.log(`${JSON.stringify(result.document.content)}`);
             }      
-            //console.log(searchResults.count);
             if(searchResults.count===0){
                 const noResultMessage = 'Sorry, we cannot find related articles from our search service.';
                 await stepContext.context.sendActivity(noResultMessage,noResultMessage,InputHints.IgnoringInput);
@@ -152,34 +158,35 @@ class MainDialog extends ComponentDialog {
             else{
                 const ResultMessage = 'We have found you these results:';
                 await stepContext.context.sendActivity(ResultMessage,ResultMessage,InputHints.IgnoringInput);
-                //let cards = [];
                 for(let i=0;i<searchResults.count;i++){
-                    //await stepContext.context.sendActivity(`${JSON.stringify(a[i].document.content)}`,`${JSON.stringify(a[i].document.content)}`,InputHints.IgnoringInput);
                     let str = `${JSON.stringify(a[i].document.content)}`; 
                     str = JSON.parse(str);
                     console.log(str);
                     let url = `${ Buffer.from( a[i].document["metadata_storage_path"], 'base64' ) }`;
-                    //let card = this.generateCards(`${JSON.stringify(a[i].document.content)}`);\
                     let card = this.generateCards(str,url);
                     const welcomeCard = CardFactory.adaptiveCard(card);
                     await stepContext.context.sendActivity({ attachments: [welcomeCard] });
 
                 }
-                // let card = this.generateCards(`${JSON.stringify(a[0].document.content)}`);
-                // const welcomeCard = CardFactory.adaptiveCard(card);
-                // await stepContext.context.sendActivity({ attachments: [welcomeCard] });
-                //await stepContext.context.sendActivity(`${JSON.stringify(a.document.content)}`,`${JSON.stringify(a.document.content)}`,InputHints.IgnoringInput);
-            }
+                const ticket = CardFactory.adaptiveCard(ticketcard);
+                await stepContext.context.sendActivity({ attachments: [ticket] });
+                // let submitted = stepContext.context.activity.text;
+                // let ticketValues = stepContext.context.activity.value;
+                // let comments = JSON.parse(ticketValues.comments);
+                // console.log(comments);
+                // if (!submitted && ticketValues) {
+                //     // Retrieve the data from the id_number field
+                //     let comments = JSON.parse(ticketValues.comments);
+                //     console.log(comments);
+                // }
 
-            //const card = CardFactory.adaptiveCard(testcard);
-            //await stepContext.context.sendActivity({ attachments: [card] });
-            //await stepContext.context.sendActivity(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
+                //}
             break;
         }
+    }
 
         default: {
-            // Catch all for unhandled intents
-            //this.generateCards(stepContext);
+
             const didntUnderstandMessageText = `Sorry, I didn't get that. Please try asking in a different way (intent was ${ LuisRecognizer.topIntent(luisResult) })`;
             await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
         }
@@ -227,6 +234,15 @@ class MainDialog extends ComponentDialog {
             const msg = `I have you booked to ${ result.destination } from ${ result.origin } on ${ travelDateMsg }.`;
             await stepContext.context.sendActivity(msg, msg, InputHints.IgnoringInput);
         }
+        let submitted = stepContext.context.activity.text;
+                let ticketValues = stepContext.context.activity.value;
+                //let comments = JSON.parse(ticketValues.comments);
+                //console.log(comments);
+                if (!submitted && ticketValues) {
+                    // Retrieve the data from the id_number field
+                    let comments = JSON.parse(ticketValues.comments);
+                    console.log(comments);
+                }
 
         // Restart the main dialog with a different message the second time around
         return await stepContext.replaceDialog(this.initialDialogId, { restartMsg: 'What else can I do for you?' });

@@ -4,11 +4,6 @@
   "version": "1.0",
   "body": [
     {
-      "type": "Image",
-      "url": "http://ilikesqldata.com/wp-content/uploads/2018/05/azurecomcdn.azureedge.net6919980b-f019-469b-a065-d-3e214ed626856a2a3a54518b684abaccb0ac4059.png",
-      "size": "stretch"
-    },
-    {
       "type": "TextBlock",
       "spacing": "medium",
       "size": "default",
