@@ -179,10 +179,10 @@ class MainDialog extends ComponentDialog {
                 //     let comments = JSON.parse(ticketValues.comments);
                 //     console.log(comments);
                 // }
-
+            }
                 //}
             break;
-        }
+        
     }
 
         default: {
