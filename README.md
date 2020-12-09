@@ -28,7 +28,8 @@ We researched 6 bot framework on the market: `Azure Bot Framework`, `Amazon Lex`
 - Adaptability: Requirements
 - Environment: Support Teams/Skype and language Support
 
-![image of bot framework analysis]()
+![image of bot framework analysis](https://github.com/Asonjay/HondaVA/blob/main/documentation/Bot%20framework%20analysis.png)
+
 After our decision making process, our recommendation for honda is to build the system based on **Azure Bot Framework**
 
 ## Bot Framework Customization
@@ -43,6 +44,7 @@ This customization has been created using [Bot Framework](https://dev.botframewo
 ## System Architecture
 
 ![Image of system architecture](https://github.com/Asonjay/HondaVA/blob/main/documentation/System%20Architecture.png)
+
 Our system cooperates `Microsoft Teams`, `Azure Bot Framework`, `LUIS`, and `Azure Cognitive Search`. We divided system into 5 subsystems:
 
 - Login System
