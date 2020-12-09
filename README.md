@@ -1,99 +1,65 @@
-# CoreBot
+# Honda Virtual Assistant
 
-Bot Framework v4 core bot sample.
+Team Member:
+- Author: Jason Xu, Jiankai Xu, Jeremy Lin
+- Sponsor: Amol Govindwar
+- Instructor: Dr. Rajiv Ramnath
 
-This bot has been created using [Bot Framework](https://dev.botframework.com), it shows how to:
+## Introduction
+
+Honda R&D Americas LLC supports the design and development of new products for Honda Globally. As part of the IT group in R&D, we provide IT infrastructure, services to users. We can see that Self Service is increasing in the industry and with more remote work we want to enable the self-service with the virtual assistant. This new product will enable us to use new technology to better serve the customer. 
+
+We have many knowledge bases, however, to get to the user at the right time is difficult and time-consuming. With Virtual assistant, users can get real time feedback and get the answer to their question which is mostly in the knowledge base. The Virtual assistant will improve the self-service capability and reduce the burden on existing support staff. So that they can focus on more value-added work. 
+
+![Image of introduction]()
+
+This project will explore implementing a virtual assistant on `Microsoft Team` or `Skype` platform, to help automate common internal tasks and reduce ticket loads. It includes three parts:
+
+- Research bot framework on the market
+- Analyzing bot framework and making recommendation for Honda
+- Exploring customization of bot framework
+
+## Bot Framework Analysis
+
+We researched 6 bot framework on the market: `Azure Bot Framework`, `Amazon Lex`, `Pandorabot`, `IBM Watson`, `Botpress`, and `Google Dialogflow`. Analysis of bot framework is based on the factors below:
+
+- Quality: Knowledge and SLA
+- Development: Development Cost, maintenance cost, and complexity
+- Adaptability: Requirements
+- Environment: Support Teams/Skype and language Support
+
+After our decision making process, our recommendation for honda is to build the system based on **Azure Bot Framework**
+
+## Bot Framework Customization
+
+This customization has been created using [Bot Framework](https://dev.botframework.com), it shows how to:
 
 - Use [LUIS](https://www.luis.ai) to implement core AI capabilities
-- Implement a multi-turn conversation using Dialogs
-- Handle user interruptions for such things as `Help` or `Cancel`
-- Prompt for and validate requests for information from the user
+- Handle user interruptions for such things as `Search for` or `Find`
+- Use [Azure Cognitive Search](https://azure.microsoft.com/en-us/services/search/) to retrieve requested knowledge base file
+- Format the response using [Adaptive Cards](https://adaptivecards.io/)
 
-## Prerequisites
+## System Architecture
 
-This sample **requires** prerequisites in order to run.
+![Image of system architecture]()
+Our system cooperates `Microsoft Teams`, `Azure Bot Framework`, `LUIS`, and `Azure Cognitive Search`. We divided system into 5 subsystems:
 
-### Overview
+- Login System
+- Bot Framework
+- Routine Task Identifier
+- Notification & Email Handler
+- Incident Reporter
 
-This bot uses [LUIS](https://www.luis.ai), an AI based cognitive service, to implement language understanding.
+## Project Assets
 
-- [Node.js](https://nodejs.org) version 10.14 or higher
+Under `documentation` folder, there are documentations for this project.
 
-    ```bash
-    # determine node version
-    node --version
-    ```
+- `Honda VA - Bot Framework Analysis`: Analysis of 6 bot framework on the market, including comparison and decision making report
+- `Honda VA - Project Workbook`: Workbook including software engineering process, requirements and analysis, architecture, project planning, and project handoff
+- `Honda VA - Setup Instruction`: Instruction of replicating the process of how to rebuild our system
 
-### Create a LUIS Application to enable language understanding
+## Acknowledgements
 
-The LUIS model for this example can be found under `cognitiveModels/FlightBooking.json` and the LUIS language model setup, training, and application configuration steps can be found [here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-luis?view=azure-bot-service-4.0&tabs=javascript).
+This bot framework is inspired by BotBuilder-Samples [13.core-bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/csharp_dotnetcore/13.core-bot)
 
-Once you created the LUIS model, update `.env` with your `LuisAppId`, `LuisAPIKey` and `LuisAPIHostName`.
-
-```text
-LuisAppId = "Your LUIS App Id"
-LuisAPIKey = "Your LUIS Subscription key here"
-LuisAPIHostName = "Your LUIS App region here (i.e: westus.api.cognitive.microsoft.com)"
-```
-
-## To try this sample
-
-- Clone the repository
-
-    ```bash
-    git clone https://github.com/microsoft/botbuilder-samples.git
-    ```
-
-- In a terminal, navigate to `samples/javascript_nodejs/13.core-bot`
-
-    ```bash
-    cd samples/javascript_nodejs/13.core-bot
-    ```
-
-- Install modules
-
-    ```bash
-    npm install
-    ```
-
-- Setup LUIS
-
-    The prerequisites outlined above contain the steps necessary to provision a language understanding model on www.luis.ai.  Refer to _Create a LUIS Application to enable language understanding_ above for directions to setup and configure LUIS.
-
-- Run the sample
-
-    ```bash
-    npm start
-    ```
-
-## Testing the bot using Bot Framework Emulator
-
-[Bot Framework Emulator](https://github.com/microsoft/botframework-emulator) is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
-
-- Install the latest Bot Framework Emulator from [here](https://github.com/Microsoft/BotFramework-Emulator/releases)
-
-### Connect to the bot using Bot Framework Emulator
-
-- Launch Bot Framework Emulator
-- File -> Open Bot
-- Enter a Bot URL of `http://localhost:3978/api/messages`
-
-## Deploy the bot to Azure
-
-To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
-
-## Further reading
-
-- [Bot Framework Documentation](https://docs.botframework.com)
-- [Bot Basics](https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0)
-- [Dialogs](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0)
-- [Gathering Input Using Prompts](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-prompts?view=azure-bot-service-4.0&tabs=csharp)
-- [Activity processing](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-activity-processing?view=azure-bot-service-4.0)
-- [Azure Bot Service Introduction](https://docs.microsoft.com/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
-- [Azure Bot Service Documentation](https://docs.microsoft.com/azure/bot-service/?view=azure-bot-service-4.0)
-- [Azure CLI](https://docs.microsoft.com/cli/azure/?view=azure-cli-latest)
-- [Azure Portal](https://portal.azure.com)
-- [Language Understanding using LUIS](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/)
-- [Channels and Bot Connector Service](https://docs.microsoft.com/en-us/azure/bot-service/bot-concepts?view=azure-bot-service-4.0)
-- [Restify](https://www.npmjs.com/package/restify)
-- [dotenv](https://www.npmjs.com/package/dotenv)
+Special thanks to **Dr. Rajiv Ramnath** for guiding us to finish this project. Plus, thanks to **Amol Govindwar** to initiate this project and provide us with all his experiences and knowledge.
