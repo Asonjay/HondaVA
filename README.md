@@ -11,7 +11,7 @@ Honda R&D Americas LLC supports the design and development of new products for H
 
 We have many knowledge bases, however, to get to the user at the right time is difficult and time-consuming. With Virtual assistant, users can get real time feedback and get the answer to their question which is mostly in the knowledge base. The Virtual assistant will improve the self-service capability and reduce the burden on existing support staff. So that they can focus on more value-added work. 
 
-![Image of introduction]()
+![Image of introduction](https://github.com/Asonjay/HondaVA/blob/main/documentation/Introduction.png)
 
 This project will explore implementing a virtual assistant on `Microsoft Team` or `Skype` platform, to help automate common internal tasks and reduce ticket loads. It includes three parts:
 
@@ -41,7 +41,7 @@ This customization has been created using [Bot Framework](https://dev.botframewo
 
 ## System Architecture
 
-![Image of system architecture]()
+![Image of system architecture](https://github.com/Asonjay/HondaVA/blob/main/documentation/System%20Architecture.png)
 Our system cooperates `Microsoft Teams`, `Azure Bot Framework`, `LUIS`, and `Azure Cognitive Search`. We divided system into 5 subsystems:
 
 - Login System
